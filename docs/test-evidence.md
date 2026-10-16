@@ -1,14 +1,12 @@
-# Test evidence
+# Testing and repair experiments
 
-Executed locally on 2026-10-12 with Python 3.11.15 under WSL. No third-party runtime dependencies
-and no cloud resources were used.
+The local tests use Python's standard library and synthetic replica histories; no cloud resources
+are required.
 
-## Commands and results
+## Test coverage
 
-```text
+```bash
 python3 -m unittest discover -s tests -v
-Ran 31 tests in 0.328s
-OK
 ```
 
 Coverage includes sequential and concurrent writes, concurrent delete/edit, stale replay,
@@ -37,16 +35,11 @@ empirical coverage, not a formal proof.
 Counts are based on canonical envelopes and do not include transport framing, hash exchange or a
 network stack. No speedup or network throughput was measured.
 
-## Packaging
+## Package checks
 
-```text
-python3 -m pip wheel --no-build-isolation --no-deps --wheel-dir /tmp/replica-repair-wheels .
-Successfully built replica-repair
-```
-
-Built `replica_repair-0.1.0-py3-none-any.whl`. An isolated Python process imported directly from
-the wheel, verified that module paths came from the archive rather than the checkout, ran the
-demo, and asserted convergence and deletion preservation. Result: PASS.
+Build a wheel with `python3 -m pip wheel --no-build-isolation --no-deps .`. Validate it from an
+isolated process outside the source checkout: imports should resolve from the installed package,
+and the demo should preserve convergence and deletion behavior.
 
 ## Limits of validation
 
